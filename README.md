@@ -5,3 +5,5 @@ API JSON par dessus le [service de vérification du justificatif et de l'avis d'
 Exemple : https://svair-api.herokuapp.com/?numeroFiscal=XXXXXXXXXXXXX&referenceAvis=XXXXXXXXXXXXX
 
 _Attention : Sur le site de démonstration les données transitent par des tiers (Amazon Web Services, Heroku)._
+
+![Peinture fraîche par dessus vieux mur](http://www.maisonbrico.com/images/conseils/papier-peint-ou-peinture-qui-se-decollent-2800-p1.png)
