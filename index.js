@@ -5,6 +5,13 @@ function parseEuro(str) {
     return _.parseInt(str.replace(/€/g, '').replace(/\ /g, ''));
 }
 
+var mappingDeclarant = {
+    'Nom': 'nom',
+    'Nom de naissance': 'nomNaissance',
+    'Prénom(s)': 'prenoms',
+    'Date de naissance': 'dateNaissance'
+};
+
 var mapping = {
     dateRecouvrement: 'Date de mise en recouvrement de l\'avis d\'impôt',
     dateEtablissement: 'Date d\'établissement',
@@ -27,7 +34,10 @@ var mappingBySrc = _.indexBy(compactedMapping, 'src');
 
 module.exports = function (numeroFiscal, referenceAvis, done) {
     var browser = Browser.create();
-    var data = {};
+    var data = {
+        declarant1: {},
+        declarant2: {}
+    };
 
     browser.visit('https://cfsmsp.impots.gouv.fr/secavis', function (err) {
         if (err) return done(new Error('Unable to visit SVAIR website'));
@@ -43,9 +53,14 @@ module.exports = function (numeroFiscal, referenceAvis, done) {
 
                 browser.queryAll('tr').forEach(function (row) {
                     var cols = browser.queryAll('td', row);
+                    var rowHeading = browser.text(cols[0]).trim();
 
-                    if (cols.length === 2 && browser.text(cols[0]) in mappingBySrc) {
-                        var mappingEntry = mappingBySrc[browser.text(cols[0])];
+                    if (rowHeading in mappingDeclarant) {
+                        var key = mappingDeclarant[rowHeading];
+                        data.declarant1[key] = browser.text(cols[1]);
+                        data.declarant2[key] = browser.text(cols[2]);
+                    } else if (cols.length === 2 && rowHeading in mappingBySrc) {
+                        var mappingEntry = mappingBySrc[rowHeading];
                         if (mappingEntry.fn) {
                             data[mappingEntry.dest] = mappingEntry.fn(browser.text(cols[1]));
                         } else {
