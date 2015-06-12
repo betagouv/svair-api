@@ -33,7 +33,7 @@ var compactedMapping = _.map(mapping, function (val, key) {
 var mappingBySrc = _.indexBy(compactedMapping, 'src');
 
 module.exports = function (numeroFiscal, referenceAvis, done) {
-    var browser = Browser.create();
+    var browser = new Browser();
     var data = {
         declarant1: {},
         declarant2: {}
