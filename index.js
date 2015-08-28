@@ -15,7 +15,7 @@ var mappingDeclarant = {
 var mapping = {
     dateRecouvrement: 'Date de mise en recouvrement de l\'avis d\'impôt',
     dateEtablissement: 'Date d\'établissement',
-    nombreParts: { src: 'Nombre de parts(s)', fn: parseFloat },
+    nombreParts: { src: 'Nombre de part(s)', fn: parseFloat },
     situationFamille: 'Situation de famille',
     nombrePersonnesCharge: { src: 'Nombre de personne(s) à charge', fn: _.parseInt },
     revenuBrutGlobal: { src: 'Revenu brut global', fn: parseEuro },
