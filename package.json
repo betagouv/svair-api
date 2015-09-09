@@ -1,6 +1,6 @@
 {
   "name": "svair-api",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "Small JSON API over SVAIR",
   "main": "index.js",
   "directories": {
@@ -26,8 +26,8 @@
   },
   "homepage": "https://github.com/sgmap/svair-api",
   "dependencies": {
-    "express": "^4.11.2",
-    "lodash": "^3.1.0",
-    "zombie": "4.0.10"
+    "express": "^4.13.3",
+    "lodash": "^3.10.1",
+    "zombie": "4.1.0"
   }
 }
