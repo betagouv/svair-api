@@ -69,12 +69,15 @@ module.exports = function (numeroFiscal, referenceAvis, done) {
                     }
                 });
 
-                var titleAnnee = browser.query('.titre_affiche_avis')._childNodes[1].textContent;
-                var regexp = /(\d{4})/g;
+                var nodeAnnee = browser.query('.titre_affiche_avis');
+                if (nodeAnnee) {
+                    var titleAnnee = nodeAnnee._childNodes[1].textContent;
+                    var regexp = /(\d{4})/g;
 
-                data.anneeImpots = regexp.exec(titleAnnee)[0];
-                data.anneeRevenus = regexp.exec(titleAnnee)[0];
-
+                    data.anneeImpots = regexp.exec(titleAnnee)[0];
+                    data.anneeRevenus = regexp.exec(titleAnnee)[0];
+                }
+                
                 done(null, data);
             });
     });
