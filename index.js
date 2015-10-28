@@ -1,10 +1,7 @@
 var _ = require('lodash');
 var request2 = require('request');
 var jsdom = require("jsdom");
-
-function parseEuro(str) {
-    return _.parseInt(str.replace(/€/g, '').replace(/\ /g, ''));
-}
+var parseResponse = require('utils/parse').result
 
 module.exports = function (numeroFiscal, referenceAvis, done) {
     var request = request2.defaults({jar: true})
@@ -28,7 +25,7 @@ module.exports = function (numeroFiscal, referenceAvis, done) {
           formData["javax.faces.ViewState"] = viewState;
           request.post({url:postUrl, formData: formData}, function (err, httpResponse, body) {
             if (err) return done(err);
-            done(null, body);
+            done(null, parseResponse(body));
           });
         }
       );
