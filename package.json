@@ -26,13 +26,13 @@
   },
   "homepage": "https://github.com/Flightan/svair-api",
   "dependencies": {
-    "express": "^4.13.3",
     "jsdom": "^7.0.2",
     "lodash": "^3.10.1",
     "request": "^2.65.0"
   },
   "devDependencies": {
     "chai": "^2.2.0",
+    "express": "^4.13.3",
     "istanbul": "^0.3.13",
     "mocha": "^2.2.1",
     "nock": "^2.15.0",
