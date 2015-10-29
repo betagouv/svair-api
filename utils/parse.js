@@ -4,7 +4,7 @@ var jsdom = require("jsdom");
 var fs = require('fs')
 
 
-var jquery = fs.readFileSync("./lib/jquery.js", "utf-8");
+var jquery = fs.readFileSync(__dirname + "/../lib/jquery.js", "utf-8");
 
 
 function parseEuro(str) {
