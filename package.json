@@ -1,17 +1,17 @@
 {
   "name": "svair-api",
-  "version": "0.1.8",
+  "version": "0.2.0",
   "description": "Small JSON API over SVAIR",
   "main": "index.js",
   "directories": {
     "example": "example"
   },
   "scripts": {
-    "test": "jshint *.js"
+    "test": "istanbul cover --print details _mocha -- -R spec test --timeout 10000"
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:sgmap/svair-api.git"
+    "url": "git@github.com:Flightan/svair-api.git"
   },
   "keywords": [
     "impots.gouv.fr",
@@ -22,12 +22,20 @@
   "author": "Jérôme Desboeufs <jerome.desboeufs@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/sgmap/svair-api/issues"
+    "url": "https://github.com/Flightan/svair-api/issues"
   },
-  "homepage": "https://github.com/sgmap/svair-api",
+  "homepage": "https://github.com/Flightan/svair-api",
   "dependencies": {
-    "express": "^4.13.3",
+    "jsdom": "^7.0.2",
     "lodash": "^3.10.1",
-    "zombie": "4.1.0"
+    "request": "^2.65.0"
+  },
+  "devDependencies": {
+    "chai": "^2.2.0",
+    "express": "^4.13.3",
+    "istanbul": "^0.3.13",
+    "mocha": "^2.2.1",
+    "nock": "^2.15.0",
+    "supertest": "^0.15.0"
   }
 }
