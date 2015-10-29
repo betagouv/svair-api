@@ -1,6 +1,11 @@
 
 var _ = require('lodash');
 var jsdom = require("jsdom");
+var fs = require('fs')
+
+
+var jquery = fs.readFileSync("./lib/jquery.js", "utf-8");
+
 
 function parseEuro(str) {
   return _.parseInt(str
@@ -49,10 +54,10 @@ var compactedMapping = _.map(mapping, function (val, key) {
 var mappingBySrc = _.indexBy(compactedMapping, 'src');
 
 
-  jsdom.env(
-    html,
-    ["http://code.jquery.com/jquery.js"],
-    function (err, window) {
+  jsdom.env({
+    html: html,
+    src: [jquery],
+    done: function (err, window) {
       if(err) return callback(err);
       if (window.$('#nonTrouve').length > 0) {
         return callback(new Error('Invalid credentials'));
@@ -75,6 +80,6 @@ var mappingBySrc = _.indexBy(compactedMapping, 'src');
       })
       callback(null, result)
     }
-  );
+  });
 
 }
