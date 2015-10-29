@@ -54,6 +54,9 @@ var mappingBySrc = _.indexBy(compactedMapping, 'src');
     ["http://code.jquery.com/jquery.js"],
     function (err, window) {
       if(err) return callback(err);
+      if (window.$('#nonTrouve').length > 0) {
+        return callback(new Error('Invalid credentials'));
+      }
       window.$('#principal table tr').each(function() {
         var cells = window.$(this).find('td')
         var rowHeading = cells.eq(0).text().trim()
