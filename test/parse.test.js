@@ -136,5 +136,21 @@ describe('Parse ', function () {
       })
     })
 
+    it("extract the year of impots ", function (done) {
+      parseResult(postHttpResponse, function(err, result) {
+        if(err) return done(err);
+        expect(result.anneeImpots).to.equal('2015')
+        done();
+      })
+    })
+
+    it("extract anneeRevenus", function (done) {
+      parseResult(postHttpResponse, function(err, result) {
+        if(err) return done(err);
+        expect(result.anneeRevenus).to.equal('2014')
+        done();
+      })
+    })
+
   });
 });

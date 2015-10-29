@@ -78,6 +78,14 @@ var mappingBySrc = _.indexBy(compactedMapping, 'src');
             }
         }
       })
+      var nodeAnnee = window.$('.titre_affiche_avis span');
+      if (nodeAnnee.length > 0) {
+          var titleAnnee = nodeAnnee.eq(0).text();
+          var regexp = /(\d{4})/g;
+
+          result.anneeImpots = regexp.exec(titleAnnee)[0];
+          result.anneeRevenus = regexp.exec(titleAnnee)[0];
+      }
       callback(null, result)
     }
   });
