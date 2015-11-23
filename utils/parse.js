@@ -56,6 +56,13 @@ module.exports.result = function parseResult(html, callback) {
 
   var declarantMappingBySrc = _.indexBy(compactedDeclarantMapping, 'src');
 
+  function getImpot(value) {
+    if(value.trim() === "Non imposable") {
+      return 0
+    }
+    return parseEuro(value)
+  }
+
   var mapping = {
     dateRecouvrement: 'Date de mise en recouvrement de l\'avis d\'impôt',
     dateEtablissement: 'Date d\'établissement',
@@ -64,8 +71,8 @@ module.exports.result = function parseResult(html, callback) {
     nombrePersonnesCharge: { src: 'Nombre de personne(s) à charge', fn: _.parseInt },
     revenuBrutGlobal: { src: 'Revenu brut global', fn: parseEuro },
     revenuImposable: { src: 'Revenu imposable', fn: parseEuro },
-    impotRevenuNetAvantCorrections: { src: 'Impôt sur le revenu net avant corrections', fn: parseEuro },
-    montantImpot: { src: 'Montant de l\'impôt', fn: parseEuro },
+    impotRevenuNetAvantCorrections: { src: 'Impôt sur le revenu net avant corrections', fn: getImpot },
+    montantImpot: { src: 'Montant de l\'impôt', fn: getImpot },
     revenuFiscalReference: { src: 'Revenu fiscal de référence', fn: parseEuro }
 };
 
