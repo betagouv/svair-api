@@ -16,6 +16,22 @@ function parseEuro(str) {
     .replace(/\t/g, ''));
 }
 
+function parseAdress(line, cells, result, key) {
+  var city = line.next('tr').find('td').eq(1).text().trim();
+  result.declarant1[key] = {
+    voirie: cells.eq(1).text().trim(),
+    commune: city
+  }
+  var declarant2Name = cells.eq(2).text().trim()
+  if(declarant2Name) {
+    result.declarant2[key] = {
+      voirie: declarant2Name,
+      commune: city
+    }
+  }
+  return result;
+}
+
 module.exports.euro = parseEuro
 
 
@@ -26,12 +42,19 @@ module.exports.result = function parseResult(html, callback) {
   }
 
   var mappingDeclarant = {
-    'Nom': 'nom',
-    'Nom de naissance': 'nomNaissance',
-    'Prénom(s)': 'prenoms',
-    'Date de naissance': 'dateNaissance'
+    nom: 'Nom',
+    nomNaissance : 'Nom de naissance',
+    prenoms: 'Prénom(s)',
+    dateNaissance : 'Date de naissance',
+    adresse : { src: 'Adresse déclarée au 1er janvier  2015', fn: parseAdress }
   };
 
+  var compactedDeclarantMapping = _.map(mappingDeclarant, function (val, key) {
+      var obj = _.isString(val) ? { src: val } : val;
+      return _.assign(obj, { dest: key });
+  });
+
+  var declarantMappingBySrc = _.indexBy(compactedDeclarantMapping, 'src');
 
   var mapping = {
     dateRecouvrement: 'Date de mise en recouvrement de l\'avis d\'impôt',
@@ -53,7 +76,6 @@ var compactedMapping = _.map(mapping, function (val, key) {
 
 var mappingBySrc = _.indexBy(compactedMapping, 'src');
 
-
   jsdom.env({
     html: html,
     src: [jquery],
@@ -63,12 +85,19 @@ var mappingBySrc = _.indexBy(compactedMapping, 'src');
         return callback(new Error('Invalid credentials'));
       }
       window.$('#principal table tr').each(function() {
-        var cells = window.$(this).find('td')
+        var line =  window.$(this);
+        var cells = line.find('td');
         var rowHeading = cells.eq(0).text().trim()
-        if (rowHeading in mappingDeclarant) {
-          var key = mappingDeclarant[rowHeading];
-          result.declarant1[key] = cells.eq(1).text().trim()
-          result.declarant2[key] = cells.eq(2).text().trim()
+        if (rowHeading in declarantMappingBySrc) {
+          var mappingEntry = declarantMappingBySrc[rowHeading];
+          if (mappingEntry.fn) {
+            result = mappingEntry.fn(line, cells, result, mappingEntry.dest)
+          } else {
+            result.declarant1[mappingEntry.dest] = cells.eq(1).text().trim()
+            result.declarant2[mappingEntry.dest] = cells.eq(2).text().trim()
+          }
+
+
         } else if (cells.length === 2 && rowHeading in mappingBySrc) {
             var mappingEntry = mappingBySrc[rowHeading];
             if (mappingEntry.fn) {

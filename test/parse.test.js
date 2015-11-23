@@ -36,7 +36,11 @@ describe('Parse ', function () {
           nom: 'MARTIN',
           nomNaissance: 'MARTIN',
           prenoms: 'Jean',
-          dateNaissance: '29/03/1984'
+          dateNaissance: '29/03/1984',
+          adresse: {
+            voirie: '34 RUE DE L\'EGLISE',
+            commune: '75009 PARIS'
+          }
         });
         done();
       })
