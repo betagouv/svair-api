@@ -16,29 +16,28 @@ function parseEuro(str) {
     .replace(/\t/g, ''));
 }
 
-function parseAdress(line, cells, result, key) {
-  var city = line.next('tr').find('td').eq(1).text().trim();
-  result.declarant1[key] = {
-    voirie: cells.eq(1).text().trim(),
-    commune: city
-  }
-  var declarant2Name = cells.eq(2).text().trim()
-  if(declarant2Name) {
-    result.declarant2[key] = {
-      voirie: declarant2Name,
-      commune: city
-    }
-  }
-  return result;
-}
+
 
 module.exports.euro = parseEuro
 
 
-module.exports.result = function parseResult(html, callback) {
+module.exports.result = function parseResult(html, year, callback) {
   var result = {
     declarant1: { },
     declarant2: { }
+  }
+
+  function parseAdress(line, result) {
+    var adress = '';
+    while((line.find('.espace').length) === 0) {
+      adress += line.find('td').eq(1).text().trim() + ' ';
+      line = line.next('tr');
+    }
+    result.foyerFiscal = {
+      annee: year,
+      adresse: adress.trim()
+    };
+    return result;
   }
 
   var mappingDeclarant = {
@@ -46,7 +45,7 @@ module.exports.result = function parseResult(html, callback) {
     nomNaissance : 'Nom de naissance',
     prenoms: 'Prénom(s)',
     dateNaissance : 'Date de naissance',
-    adresse : { src: 'Adresse déclarée au 1er janvier  2015', fn: parseAdress }
+    adresse : { src: 'Adresse déclarée au 1er janvier  ' + year, fn: parseAdress }
   };
 
   var compactedDeclarantMapping = _.map(mappingDeclarant, function (val, key) {
@@ -98,7 +97,7 @@ var mappingBySrc = _.indexBy(compactedMapping, 'src');
         if (rowHeading in declarantMappingBySrc) {
           var mappingEntry = declarantMappingBySrc[rowHeading];
           if (mappingEntry.fn) {
-            result = mappingEntry.fn(line, cells, result, mappingEntry.dest)
+            result = mappingEntry.fn(line, result)
           } else {
             result.declarant1[mappingEntry.dest] = cells.eq(1).text().trim()
             result.declarant2[mappingEntry.dest] = cells.eq(2).text().trim()
