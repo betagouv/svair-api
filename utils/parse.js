@@ -16,22 +16,51 @@ function parseEuro(str) {
     .replace(/\t/g, ''));
 }
 
+
+
 module.exports.euro = parseEuro
 
 
-module.exports.result = function parseResult(html, callback) {
+module.exports.result = function parseResult(html, year, callback) {
   var result = {
     declarant1: { },
     declarant2: { }
   }
 
+  function parseAdress(line, result) {
+    var adress = '';
+    while((line.find('.espace').length) === 0) {
+      adress += line.find('td').eq(1).text().trim() + ' ';
+      line = line.next('tr');
+    }
+    result.foyerFiscal = {
+      annee: year,
+      adresse: adress.trim()
+    };
+    return result;
+  }
+
   var mappingDeclarant = {
-    'Nom': 'nom',
-    'Nom de naissance': 'nomNaissance',
-    'Prénom(s)': 'prenoms',
-    'Date de naissance': 'dateNaissance'
+    nom: 'Nom',
+    nomNaissance : 'Nom de naissance',
+    prenoms: 'Prénom(s)',
+    dateNaissance : 'Date de naissance',
+    adresse : { src: 'Adresse déclarée au 1er janvier  ' + year, fn: parseAdress }
   };
 
+  var compactedDeclarantMapping = _.map(mappingDeclarant, function (val, key) {
+      var obj = _.isString(val) ? { src: val } : val;
+      return _.assign(obj, { dest: key });
+  });
+
+  var declarantMappingBySrc = _.indexBy(compactedDeclarantMapping, 'src');
+
+  function getImpot(value) {
+    if(value.trim() === "Non imposable") {
+      return null
+    }
+    return parseEuro(value)
+  }
 
   var mapping = {
     dateRecouvrement: 'Date de mise en recouvrement de l\'avis d\'impôt',
@@ -41,8 +70,8 @@ module.exports.result = function parseResult(html, callback) {
     nombrePersonnesCharge: { src: 'Nombre de personne(s) à charge', fn: _.parseInt },
     revenuBrutGlobal: { src: 'Revenu brut global', fn: parseEuro },
     revenuImposable: { src: 'Revenu imposable', fn: parseEuro },
-    impotRevenuNetAvantCorrections: { src: 'Impôt sur le revenu net avant corrections', fn: parseEuro },
-    montantImpot: { src: 'Montant de l\'impôt', fn: parseEuro },
+    impotRevenuNetAvantCorrections: { src: 'Impôt sur le revenu net avant corrections', fn: getImpot },
+    montantImpot: { src: 'Montant de l\'impôt', fn: getImpot },
     revenuFiscalReference: { src: 'Revenu fiscal de référence', fn: parseEuro }
 };
 
@@ -53,7 +82,6 @@ var compactedMapping = _.map(mapping, function (val, key) {
 
 var mappingBySrc = _.indexBy(compactedMapping, 'src');
 
-
   jsdom.env({
     html: html,
     src: [jquery],
@@ -63,12 +91,19 @@ var mappingBySrc = _.indexBy(compactedMapping, 'src');
         return callback(new Error('Invalid credentials'));
       }
       window.$('#principal table tr').each(function() {
-        var cells = window.$(this).find('td')
+        var line =  window.$(this);
+        var cells = line.find('td');
         var rowHeading = cells.eq(0).text().trim()
-        if (rowHeading in mappingDeclarant) {
-          var key = mappingDeclarant[rowHeading];
-          result.declarant1[key] = cells.eq(1).text().trim()
-          result.declarant2[key] = cells.eq(2).text().trim()
+        if (rowHeading in declarantMappingBySrc) {
+          var mappingEntry = declarantMappingBySrc[rowHeading];
+          if (mappingEntry.fn) {
+            result = mappingEntry.fn(line, result)
+          } else {
+            result.declarant1[mappingEntry.dest] = cells.eq(1).text().trim()
+            result.declarant2[mappingEntry.dest] = cells.eq(2).text().trim()
+          }
+
+
         } else if (cells.length === 2 && rowHeading in mappingBySrc) {
             var mappingEntry = mappingBySrc[rowHeading];
             if (mappingEntry.fn) {

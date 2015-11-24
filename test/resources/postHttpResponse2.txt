@@ -1,0 +1,173 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-
+transitional.dtd">
+<!-- saved from url=(0060)https://cfsmsp.impots.gouv.fr/secavis/faces/commun/index.jsf -->
+<html xmlns="http://www.w3.org/1999/xhtml"><script type="text/javascript">window["_gaUserPrefs"] = { ioo : function() { return true; } }</script><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+
+<title>Impots.gouv.fr - Service de vérification en ligne des avis</title>
+<link href="./Impots.gouv.fr - Service de vérification en ligne des avis_files/style.css" rel="styleSheet" type="text/css">
+<style>img[src="https://logs1279.xiti.com/hit.xiti?s=532158&s2=3&p=CONSULTATION::Saisie_Avis_erreur_pas_javascript&"],
+img[src="https://logs1279.xiti.com/hit.xiti?s=532158&s2=3&p=AFFICHAGE::Avis_Sans_Correctif_erreur_pas_javascript&"]
+{display:none !important;}</style></head>
+
+<body>
+
+<div id="conteneur">
+<div id="barre_haut">
+			<div style="float: left;"><img src="./Impots.gouv.fr - Service de vérification en ligne des avis_files/bo_seule-2.gif" alt=""></div>
+			<div style="float: right;"><img src="./Impots.gouv.fr - Service de vérification en ligne des avis_files/bo_seule-3.gif" alt=""></div>
+</div>
+<div id="principal">
+<div id="nav_pro">
+<b>L'administration fiscale certifie l'authenticité du document présenté pour les données suivantes :</b>
+</div>
+
+<div class="titre_affiche_avis">
+<span>Impôt   2014 sur les revenus de l'année  2013
+</span>
+</div>
+
+
+			<table>
+				<tbody>
+				<tr>
+					<td class="label">
+					</td>
+					<td class="label">Déclarant 1
+					</td>
+					<td class="label">Déclarant 2
+					</td>
+				</tr>
+				<tr>
+					<td class="labelPair">Nom
+					</td>
+					<td class="labelPair">HONORE
+					</td>
+					<td class="labelPair">MARTIN
+					</td>
+				</tr>
+				<tr>
+					<td class="labelImpair">Nom de naissance
+					</td>
+					<td class="labelImpair">HONORE
+					</td>
+					<td class="labelImpair">MARTIN
+					</td>
+				</tr>
+				<tr>
+					<td class="labelPair">Prénom(s)
+					</td>
+					<td class="labelPair">Jean
+					</td>
+					<td class="labelPair">Laurence
+					</td>
+				</tr>
+				<tr>
+					<td class="labelImpair">Date de naissance
+					</td>
+					<td class="labelImpair">31/12/1959
+					</td>
+					<td class="labelImpair">11/06/1968
+					</td>
+				</tr>
+				<tr>
+					<td class="labelPair">
+						Adresse déclarée au 1<sup>er</sup> janvier  2014
+					</td>
+					<td class="labelPair">APT. 509
+					</td>
+					<td class="labelPair">
+					</td>
+				</tr>
+				<tr>
+					<td class="labelPair">
+					</td>
+					<td colspan="2" class="labelPair">47 rue de carnot
+					</td>
+				</tr>
+					<tr>
+					<td class="labelPair">
+					</td>
+					<td colspan="2" class="labelPair">94320 THIAIS
+					</td>
+					</tr>
+				<tr>
+					<td class="espace"></td>
+				</tr>
+				<tr>
+					<td class="labelPair" colspan="2">Date de mise en recouvrement de l'avis d'impôt
+					</td>
+					<td class="textPair">31/07/2014
+					</td>
+				</tr>
+				<tr>
+					<td class="labelImpair" colspan="2">Date d'établissement
+					</td>
+					<td class="textImpair">30/07/2014
+					</td>
+				</tr>
+				<tr>
+					<td class="labelPair" colspan="2">Nombre de part(s)
+					</td>
+					<td class="textPair">4.00
+					</td>
+				</tr>
+				<tr>
+					<td class="labelImpair" colspan="2">Situation de famille
+					</td>
+					<td class="textImpair">Marié(e)s
+					</td>
+				</tr>
+				<tr>
+					<td class="labelPair" colspan="2">Nombre de personne(s) à charge
+					</td>
+					<td class="textPair">3
+					</td>
+				</tr>
+				<tr>
+					<td class="labelImpair" colspan="2">Revenu brut global
+					</td>
+					<td class="textImpair">32&nbsp;810 €
+					</td>
+				</tr>
+				<tr>
+					<td class="labelPair" colspan="2">Revenu imposable
+					</td>
+					<td class="textPair">32&nbsp;010 €
+					</td>
+				</tr>
+				<tr>
+					<td class="labelImpair" colspan="2">Impôt sur le revenu net avant corrections
+					</td>
+					<td class="textImpair">Non imposable
+					</td>
+				</tr>
+				<tr>
+					<td class="labelPair" colspan="2">Montant de l'impôt
+					</td>
+					<td class="textPair">Non imposable
+					</td>
+				</tr>
+				<tr>
+					<td class="labelImpair" colspan="2">Revenu fiscal de référence
+					</td>
+					<td class="textImpair">32&nbsp;011 €
+					</td>
+				</tr>
+
+			</tbody></table>
+
+			<div id="situationPartielle">
+			</div>
+
+			<div id="boutonsAvis">
+				<a class="nouvelle_recherche" href="https://cfsmsp.impots.gouv.fr/secavis/">
+					Nouvelle recherche
+				</a>
+			 </div>
+
+		</div>
+		<div id="bas_page">© Ministère de l'Économie et des Finances</div><img src="https://logs1279.xiti.com/hit.xiti?s=532158&s2=3&p=AFFICHAGE::Avis_Sans_Correctif_erreur_pas_javascript&" alt="" height="1" width="1" style="display: none !important;">
+	</div>
+
+</body></html>

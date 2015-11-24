@@ -3,10 +3,9 @@ var request2 = require('request');
 var jsdom = require("jsdom");
 var parseResponse = require('./utils/parse').result
 var fs = require('fs');
+var getYearFromReferenceAvis = require('./utils/year')
 
 var jquery = fs.readFileSync( __dirname + "/lib/jquery.js", "utf-8");
-
-
 
 module.exports = function (numeroFiscal, referenceAvis, done) {
     var request = request2.defaults({jar: true})
@@ -30,7 +29,7 @@ module.exports = function (numeroFiscal, referenceAvis, done) {
           formData["javax.faces.ViewState"] = viewState;
           request.post({url:postUrl, formData: formData}, function (err, httpResponse, body) {
             if (err) return done(err);
-            parseResponse(body, done)
+            parseResponse(body, getYearFromReferenceAvis(referenceAvis), done)
           });
         }
       });
