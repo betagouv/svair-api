@@ -3,14 +3,9 @@ var request2 = require('request');
 var jsdom = require("jsdom");
 var parseResponse = require('./utils/parse').result
 var fs = require('fs');
+var getYearFromReferenceAvis = require('./utils/year')
 
 var jquery = fs.readFileSync( __dirname + "/lib/jquery.js", "utf-8");
-
-function getYearFromReferenceAvis(referenceAvis) {
-  return 2015
-}
-
-module.exports = getYearFromReferenceAvis
 
 module.exports = function (numeroFiscal, referenceAvis, done) {
     var request = request2.defaults({jar: true})
