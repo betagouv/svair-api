@@ -57,7 +57,7 @@ module.exports.result = function parseResult(html, year, callback) {
 
   function getImpot(value) {
     if(value.trim() === "Non imposable") {
-      return 0
+      return null
     }
     return parseEuro(value)
   }

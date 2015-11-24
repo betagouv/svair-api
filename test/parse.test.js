@@ -212,7 +212,7 @@ describe('Parse ', function () {
       it("extract the impotRevenuNetAvantCorrections ", function (done) {
         parseResult(postHttpResponse2, 2014, function(err, result) {
           if(err) return done(err);
-          expect(result.impotRevenuNetAvantCorrections).to.equal(0)
+          expect(result.impotRevenuNetAvantCorrections).to.equal(null)
           done();
         })
       })
@@ -220,7 +220,7 @@ describe('Parse ', function () {
       it("extract the montantImpot ", function (done) {
         parseResult(postHttpResponse2, 2014, function(err, result) {
           if(err) return done(err);
-          expect(result.montantImpot).to.equal(0)
+          expect(result.montantImpot).to.equal(null)
           done();
         })
       })
