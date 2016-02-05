@@ -8,7 +8,7 @@ var getYearFromReferenceAvis = require('./utils/year')
 var jquery = fs.readFileSync( __dirname + "/lib/jquery.js", "utf-8");
 
 module.exports = function Svair(host) {
-  return  function(numeroFiscal, referenceAvis, done) {
+  return function(numeroFiscal, referenceAvis, done) {
       var request = request2.defaults({jar: true})
       var formData = {
         'j_id6:spi':numeroFiscal,
