@@ -2,7 +2,7 @@ var expect = require('chai').expect;
 var request = require('request');
 var nock = require('nock');
 var fs = require('fs');
-var svair = require('../index')
+var Svair = require('../index')
 
 
 describe('Index test', function () {
@@ -13,7 +13,7 @@ describe('Index test', function () {
     var postHttpResponse = fs.readFileSync(__dirname + '/resources/postHttpResponse.txt','utf-8');
     var postHttpResponseError = fs.readFileSync(__dirname + '/resources/postHttpResponseError.txt','utf-8');
     var impotEndPoint = nock('https://cfsmsp.impots.gouv.fr');
-
+    var svair = new Svair('https://cfsmsp.impots.gouv.fr')
     describe("calling the API", function() {
       describe('with good identification', function() {
         it('return the declaration', function (done) {
