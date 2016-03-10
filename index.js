@@ -29,7 +29,7 @@ module.exports = function Svair(host) {
           done: function (err, window) {
             var viewState = window.$('input[id="javax.faces.ViewState"]').val();
             formData["javax.faces.ViewState"] = viewState;
-            request.post({url:postUrl, formData: formData}, function (err, httpResponse, body) {
+            request.post({url:postUrl, form: formData}, function (err, httpResponse, body) {
               if (err) return done(err);
               parseResponse(body, getYearFromReferenceAvis(referenceAvis), done)
             });
