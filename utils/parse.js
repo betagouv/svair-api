@@ -121,6 +121,9 @@ var mappingBySrc = _.indexBy(compactedMapping, 'src');
           result.anneeImpots = regexp.exec(titleAnnee)[0];
           result.anneeRevenus = regexp.exec(titleAnnee)[0];
       }
+      if(!result.declarant1.nom) {
+        return callback(new Error("Parsing error"))
+      }
       callback(null, result)
     }
   });

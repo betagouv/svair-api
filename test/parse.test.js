@@ -7,6 +7,7 @@ describe('Parse ', function () {
   var parseEuro = parse.euro;
   var parseResult = parse.result;
   var postHttpResponse = fs.readFileSync(__dirname + '/resources/postHttpResponse.txt','utf-8');
+  var getHttpResponse = fs.readFileSync(__dirname + '/resources/getHttpResponse.txt','utf-8');
   var postHttpResponse2 = fs.readFileSync(__dirname + '/resources/postHttpResponse2.txt','utf-8');
 
   describe("parse Euro", function () {
@@ -28,6 +29,15 @@ describe('Parse ', function () {
   });
 
   describe("parse Response", function () {
+    describe("for the bad formatted response", function() {
+      it("return an error", function (done) {
+        parseResult(getHttpResponse, 2015, function(err, result) {
+          expect(err).to.deep.equal(new Error("Parsing error"));
+          done();
+        })
+      })
+    })
+
     describe("for the single person", function() {
       it("extract the first person", function (done) {
         parseResult(postHttpResponse, 2015, function(err, result) {
