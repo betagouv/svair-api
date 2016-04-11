@@ -11,25 +11,27 @@ module.exports = function Svair(host) {
   return function(numeroFiscal, referenceAvis, done) {
       var request = request2.defaults({jar: true})
       var formData = {
-        'j_id6:spi':numeroFiscal,
-        'j_id6:num_facture': referenceAvis,
-        'j_id6:j_id18': 'Valider',
-        'j_id6_SUBMIT': 1
+        'j_id_7:spi':numeroFiscal,
+        'j_id_7:num_facture': referenceAvis,
+        'j_id_7:j_id_l': 'Valider',
+        'j_id_7_SUBMIT': 1
       }
 
-      var formUrl = host + '/secavis';
+      var formUrl = host + '/secavis/';
       var postUrl = host + '/secavis/faces/commun/index.jsf';
 
       request(formUrl, function (errGet, http, getBody) {
         if(errGet) return done(errGet);
-
         jsdom.env({
           html: getBody,
           src: [jquery],
           done: function (err, window) {
-            var viewState = window.$('input[id="javax.faces.ViewState"]').val();
+            var viewState = window.$('input[name="javax.faces.ViewState"]').val()
             formData["javax.faces.ViewState"] = viewState;
-            request.post({url:postUrl, form: formData}, function (err, httpResponse, body) {
+            request.post({
+              url:postUrl,
+              form: formData
+            }, function (err, httpResponse, body) {
               if (err) return done(err);
               parseResponse(body, getYearFromReferenceAvis(referenceAvis), done)
             });
