@@ -8,13 +8,19 @@ var jquery = fs.readFileSync(__dirname + "/../lib/jquery.js", "utf-8");
 
 
 function parseEuro(str) {
-  return _.parseInt(str
+  var data = str
     .replace(/\u00A0/g, '')
     .replace(/€/g, '')
     .replace(/ /g, '')
     .replace(/\n/g, '')
-    .replace(/\t/g, ''));
+    .replace(/\t/g, '')
+  return isNumeric(data) ? _.parseInt(data): 0;
 }
+
+function isNumeric(n) {
+  return !isNaN(parseFloat(n)) && isFinite(n);
+}
+
 
 
 

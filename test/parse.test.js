@@ -26,6 +26,10 @@ describe('Parse ', function () {
     it("remove space € symbol", function () {
       expect(parseEuro("1 665 €\n\t\t\t\t\t")).to.be.equal(1665)
     })
+
+    it("return 0 if no data", function () {
+      expect(parseEuro("")).to.be.equal(0)
+    })
   });
 
   describe("parse Response", function () {
