@@ -1,6 +1,7 @@
 
 var _ = require('lodash');
-var jsdom = require("jsdom");
+var xpath = require('xpath')
+var dom = require('xmldom').DOMParser
 var fs = require('fs')
 
 
@@ -9,11 +10,11 @@ var jquery = fs.readFileSync(__dirname + "/../lib/jquery.js", "utf-8");
 
 function parseEuro(str) {
   var data = str
-    .replace(/\u00A0/g, '')
-    .replace(/€/g, '')
-    .replace(/ /g, '')
-    .replace(/\n/g, '')
-    .replace(/\t/g, '')
+  .replace(/\u00A0/g, '')
+  .replace(/€/g, '')
+  .replace(/ /g, '')
+  .replace(/\n/g, '')
+  .replace(/\t/g, '')
   return isNumeric(data) ? _.parseInt(data): 0;
 }
 
@@ -28,6 +29,8 @@ module.exports.euro = parseEuro
 
 
 module.exports.result = function parseResult(html, year, callback) {
+  var doc = new dom().parseFromString(html.replace(/(\n|\t)/g, ''))
+  var select = xpath.useNamespaces({ h: 'http://www.w3.org/1999/xhtml' })
   var result = {
     declarant1: { },
     declarant2: { }
@@ -50,13 +53,12 @@ module.exports.result = function parseResult(html, year, callback) {
     nom: 'Nom',
     nomNaissance : 'Nom de naissance',
     prenoms: 'Prénom(s)',
-    dateNaissance : 'Date de naissance',
-    adresse : { src: 'Adresse déclarée au 1er janvier  ' + year, fn: parseAdress }
+    dateNaissance : 'Date de naissance'
   };
 
   var compactedDeclarantMapping = _.map(mappingDeclarant, function (val, key) {
-      var obj = _.isString(val) ? { src: val } : val;
-      return _.assign(obj, { dest: key });
+    var obj = _.isString(val) ? { src: val } : val;
+    return _.assign(obj, { dest: key });
   });
 
   var declarantMappingBySrc = _.indexBy(compactedDeclarantMapping, 'src');
@@ -79,59 +81,69 @@ module.exports.result = function parseResult(html, year, callback) {
     impotRevenuNetAvantCorrections: { src: 'Impôt sur le revenu net avant corrections', fn: getImpot },
     montantImpot: { src: 'Montant de l\'impôt', fn: getImpot },
     revenuFiscalReference: { src: 'Revenu fiscal de référence', fn: parseEuro }
-};
+  };
 
-var compactedMapping = _.map(mapping, function (val, key) {
+  var compactedMapping = _.map(mapping, function (val, key) {
     var obj = _.isString(val) ? { src: val } : val;
     return _.assign(obj, { dest: key });
-});
-
-var mappingBySrc = _.indexBy(compactedMapping, 'src');
-
-  jsdom.env({
-    html: html,
-    src: [jquery],
-    done: function (err, window) {
-      if(err) return callback(err);
-      if (window.$('#nonTrouve').length > 0) {
-        return callback(new Error('Invalid credentials'));
-      }
-      window.$('#principal table tr').each(function() {
-        var line =  window.$(this);
-        var cells = line.find('td');
-        var rowHeading = cells.eq(0).text().trim()
-        if (rowHeading in declarantMappingBySrc) {
-          var mappingEntry = declarantMappingBySrc[rowHeading];
-          if (mappingEntry.fn) {
-            result = mappingEntry.fn(line, result)
-          } else {
-            result.declarant1[mappingEntry.dest] = cells.eq(1).text().trim()
-            result.declarant2[mappingEntry.dest] = cells.eq(2).text().trim()
-          }
-
-
-        } else if (cells.length === 2 && rowHeading in mappingBySrc) {
-            var mappingEntry = mappingBySrc[rowHeading];
-            if (mappingEntry.fn) {
-              result[mappingEntry.dest] = mappingEntry.fn(cells.eq(1).text());
-            } else {
-              result[mappingEntry.dest] = cells.eq(1).text().trim();
-            }
-        }
-      })
-      var nodeAnnee = window.$('.titre_affiche_avis span');
-      if (nodeAnnee.length > 0) {
-          var titleAnnee = nodeAnnee.eq(0).text();
-          var regexp = /(\d{4})/g;
-
-          result.anneeImpots = regexp.exec(titleAnnee)[0];
-          result.anneeRevenus = regexp.exec(titleAnnee)[0];
-      }
-      if(!result.declarant1.nom) {
-        return callback(new Error("Parsing error"))
-      }
-      callback(null, result)
-    }
   });
+
+  var mappingBySrc = _.indexBy(compactedMapping, 'src');
+
+  if (select('//*[@id="nonTrouve"]', doc).length) {
+    return callback(new Error('Invalid credentials'));
+  }
+
+  var docRow = select('//*[@id="principal"]//h:table//h:tr', doc)
+  docRow.forEach(function(line) {
+    var cells = line.getElementsByTagName('td')
+    var rowHeading = cells[0].firstChild
+    if (rowHeading && rowHeading.data in declarantMappingBySrc) {
+      var mappingEntry = declarantMappingBySrc[rowHeading];
+      if (mappingEntry.fn) {
+        result = mappingEntry.fn(line, result)
+      } else {
+        result.declarant1[mappingEntry.dest] = cells[1].firstChild.data
+        var data;
+        if (cells[2].firstChild) data = cells[2].firstChild.data
+          result.declarant2[mappingEntry.dest] = data || ''
+      }
+
+
+    } else if (cells.length === 2 && rowHeading in mappingBySrc) {
+      var mappingEntry = mappingBySrc[rowHeading];
+      if (mappingEntry.fn) {
+        result[mappingEntry.dest] = mappingEntry.fn(cells[1].firstChild.data);
+      } else {
+        result[mappingEntry.dest] = cells[1].firstChild.data
+      }
+    }
+  })
+
+  var adress = []
+  var adressRowNumbers = [5,6,7]
+  adressRowNumbers.forEach(function (n) {
+    var node = docRow[n].getElementsByTagName('td')[1]
+    if (node) node = node.firstChild
+    if (node) adress.push(node.data)
+  })
+
+  result.foyerFiscal = {
+    annee: year,
+    adresse: adress.join(' ')
+  };
+
+  var nodeAnnee = select('//*[@class="titre_affiche_avis"]//h:span', doc)
+  if (nodeAnnee.length > 0) {
+    var titleAnnee = nodeAnnee[0].firstChild.data;
+    var regexp = /(\d{4})/g;
+
+    result.anneeImpots = regexp.exec(titleAnnee)[0];
+    result.anneeRevenus = regexp.exec(titleAnnee)[0];
+  }
+  if(!result.declarant1.nom) {
+    return callback(new Error("Parsing error"))
+  }
+  callback(null, result)
 
 }

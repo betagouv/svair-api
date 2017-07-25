@@ -26,9 +26,10 @@
   },
   "homepage": "https://github.com/Flightan/svair-api",
   "dependencies": {
-    "jsdom": "^7.0.2",
     "lodash": "^3.10.1",
-    "request": "^2.65.0"
+    "request": "^2.65.0",
+    "xmldom": "^0.1.27",
+    "xpath": "0.0.24"
   },
   "devDependencies": {
     "chai": "^2.2.0",
