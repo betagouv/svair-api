@@ -1,6 +1,7 @@
 
 var _ = require('lodash');
 var xpath = require('xpath')
+var select = xpath.useNamespaces({ h: 'http://www.w3.org/1999/xhtml' })
 var dom = require('xmldom').DOMParser
 var fs = require('fs')
 
@@ -22,31 +23,14 @@ function isNumeric(n) {
   return !isNaN(parseFloat(n)) && isFinite(n);
 }
 
-
-
-
 module.exports.euro = parseEuro
 
 
 module.exports.result = function parseResult(html, year, callback) {
   var doc = new dom().parseFromString(html.replace(/(\n|\t)/g, ''))
-  var select = xpath.useNamespaces({ h: 'http://www.w3.org/1999/xhtml' })
   var result = {
     declarant1: { },
     declarant2: { }
-  }
-
-  function parseAdress(line, result) {
-    var adress = '';
-    while((line.find('.espace').length) === 0) {
-      adress += line.find('td').eq(1).text().trim() + ' ';
-      line = line.next('tr');
-    }
-    result.foyerFiscal = {
-      annee: year,
-      adresse: adress.trim()
-    };
-    return result;
   }
 
   var mappingDeclarant = {
