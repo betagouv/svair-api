@@ -89,8 +89,10 @@ module.exports.result = function parseResult(html, year, callback) {
       } else {
         result.declarant1[mappingEntry.dest] = cells[1].firstChild.data
         var data;
-        if (cells[2].firstChild) data = cells[2].firstChild.data
+        if (cells[2].firstChild) {
+          data = cells[2].firstChild.data
           result.declarant2[mappingEntry.dest] = data || ''
+        }
       }
 
 
@@ -108,8 +110,9 @@ module.exports.result = function parseResult(html, year, callback) {
   var adressRowNumbers = [5,6,7]
   adressRowNumbers.forEach(function (n) {
     var node = docRow[n].getElementsByTagName('td')[1]
-    if (node) node = node.firstChild
-    if (node) adress.push(node.data)
+    if (node && node.firstChild) {
+      adress.push(node.firstChild.data)
+    }
   })
 
   result.foyerFiscal = {
