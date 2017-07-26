@@ -5,10 +5,6 @@ var select = xpath.useNamespaces({ h: 'http://www.w3.org/1999/xhtml' })
 var dom = require('xmldom').DOMParser
 var fs = require('fs')
 
-
-var jquery = fs.readFileSync(__dirname + "/../lib/jquery.js", "utf-8");
-
-
 function parseEuro(str) {
   var data = str
   .replace(/\u00A0/g, '')
@@ -91,8 +87,8 @@ module.exports.result = function parseResult(html, year, callback) {
         var data;
         if (cells[2].firstChild) {
           data = cells[2].firstChild.data
-          result.declarant2[mappingEntry.dest] = data || ''
         }
+        result.declarant2[mappingEntry.dest] = data || ''
       }
 
 

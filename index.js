@@ -6,8 +6,6 @@ var parseResponse = require('./utils/parse').result
 var fs = require('fs');
 var getYearFromReferenceAvis = require('./utils/year')
 
-var jquery = fs.readFileSync( __dirname + "/lib/jquery.js", "utf-8");
-
 module.exports = function Svair(host) {
   return function(numeroFiscal, referenceAvis, done) {
       var request = request2.defaults({jar: true})
