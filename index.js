@@ -1,11 +1,10 @@
 var _ = require('lodash');
 var request2 = require('request');
-var jsdom = require("jsdom");
+var xpath = require('xpath')
+var dom = require('xmldom').DOMParser
 var parseResponse = require('./utils/parse').result
 var fs = require('fs');
 var getYearFromReferenceAvis = require('./utils/year')
-
-var jquery = fs.readFileSync( __dirname + "/lib/jquery.js", "utf-8");
 
 module.exports = function Svair(host) {
   return function(numeroFiscal, referenceAvis, done) {
@@ -22,20 +21,15 @@ module.exports = function Svair(host) {
 
       request(formUrl, function (errGet, http, getBody) {
         if(errGet) return done(errGet);
-        jsdom.env({
-          html: getBody,
-          src: [jquery],
-          done: function (err, window) {
-            var viewState = window.$('input[name="javax.faces.ViewState"]').val()
-            formData["javax.faces.ViewState"] = viewState;
-            request.post({
-              url:postUrl,
-              form: formData
-            }, function (err, httpResponse, body) {
-              if (err) return done(err);
-              parseResponse(body, getYearFromReferenceAvis(referenceAvis), done)
-            });
-          }
+        var doc = new dom().parseFromString(getBody)
+        viewState = xpath.select('//*[@name="javax.faces.ViewState"]/@value', doc)[0].value
+        formData["javax.faces.ViewState"] = viewState;
+        request.post({
+          url:postUrl,
+          form: formData
+        }, function (err, httpResponse, body) {
+          if (err) return done(err);
+          parseResponse(body, getYearFromReferenceAvis(referenceAvis), done)
         });
       })
   };
