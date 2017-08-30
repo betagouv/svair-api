@@ -29,7 +29,11 @@ module.exports = function Svair(host) {
           form: formData
         }, function (err, httpResponse, body) {
           if (err) return done(err);
-          parseResponse(body, getYearFromReferenceAvis(referenceAvis), done)
+          try {
+            parseResponse(body, getYearFromReferenceAvis(referenceAvis), done)
+          } catch (e) {
+            done(new Error('Impossible to parse svair response'))
+          }
         });
       })
   };
