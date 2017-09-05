@@ -94,10 +94,12 @@ module.exports.result = function parseResult(html, year, callback) {
 
     } else if (cells.length === 2 && rowHeading in mappingBySrc) {
       var mappingEntry = mappingBySrc[rowHeading];
-      if (mappingEntry.fn) {
-        result[mappingEntry.dest] = mappingEntry.fn(cells[1].firstChild.data);
-      } else {
-        result[mappingEntry.dest] = cells[1].firstChild.data
+      if (cells[1].firstChild) {
+        if (mappingEntry.fn) {
+          result[mappingEntry.dest] = mappingEntry.fn(cells[1].firstChild.data);
+        } else {
+          result[mappingEntry.dest] = cells[1].firstChild.data
+        }
       }
     }
   })
