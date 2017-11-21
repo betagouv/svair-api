@@ -1,6 +1,6 @@
 {
   "name": "svair-api",
-  "version": "0.5.3",
+  "version": "0.5.4",
   "description": "Small JSON API over SVAIR",
   "main": "index.js",
   "directories": {
