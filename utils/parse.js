@@ -83,7 +83,9 @@ module.exports.result = function parseResult(html, year, callback) {
       if (mappingEntry.fn) {
         result = mappingEntry.fn(line, result)
       } else {
-        result.declarant1[mappingEntry.dest] = cells[1].firstChild.data
+        if (cells[1].firstChild) {
+          result.declarant1[mappingEntry.dest] = cells[1].firstChild.data
+        }
         var data;
         if (cells[2].firstChild) {
           data = cells[2].firstChild.data
