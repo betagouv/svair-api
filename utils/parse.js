@@ -90,7 +90,7 @@ module.exports.result = function parseResult(html, year, callback) {
         if (cells[2].firstChild) {
           data = cells[2].firstChild.data
         }
-        result.declarant2[mappingEntry.dest] = data || ''
+        result.declarant2[mappingEntry.dest] = data ? data.trim() : ''
       }
 
 
