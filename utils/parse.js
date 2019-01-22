@@ -128,6 +128,13 @@ module.exports.result = function parseResult(html, year, callback) {
     result.anneeImpots = regexp.exec(titleAnnee)[0];
     result.anneeRevenus = regexp.exec(titleAnnee)[0];
   }
+
+  var nodeErreurCorrectif = select('//*[@id="erreurCorrectif"]', doc);
+  if (nodeErreurCorrectif.length > 0) {
+    var erreurCorrectif = nodeErreurCorrectif[0].firstChild.data + ' ' + nodeErreurCorrectif[0].lastChild.data;
+    result.erreurCorrectif = erreurCorrectif;
+  }
+
   if(!result.declarant1.nom) {
     return callback(new Error("Parsing error"))
   }
