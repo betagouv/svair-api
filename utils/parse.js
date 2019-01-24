@@ -131,8 +131,26 @@ module.exports.result = function parseResult(html, year, callback) {
 
   var nodeErreurCorrectif = select('//*[@id="erreurCorrectif"]', doc);
   if (nodeErreurCorrectif.length > 0) {
-    var erreurCorrectif = nodeErreurCorrectif[0].firstChild.data + ' ' + nodeErreurCorrectif[0].lastChild.data;
-    result.erreurCorrectif = erreurCorrectif;
+    var textNode = _.filter(nodeErreurCorrectif[0].childNodes, { nodeType: 3 });
+    textNode.forEach(function(value, index, array) {
+      if (index === 0) {
+        result.erreurCorrectif = value.data;
+      } else {
+        result.erreurCorrectif += ' ' + value.data;
+      }
+    });
+  }
+
+  var nodeSituationPartielle = select('//*[@id="situationPartielle"]', doc);
+  if (nodeSituationPartielle.length > 0) {
+    var textNode = _.filter(nodeSituationPartielle[0].childNodes, { nodeType: 3 });
+    textNode.forEach(function(value, index, array) {
+      if (index === 0) {
+        result.nodeSituationPartielle = value.data;
+      } else {
+        result.nodeSituationPartielle += ' ' + value.data;
+      }
+    });
   }
 
   if(!result.declarant1.nom) {
