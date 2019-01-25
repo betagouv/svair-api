@@ -146,9 +146,9 @@ module.exports.result = function parseResult(html, year, callback) {
     var textNode = _.filter(nodeSituationPartielle[0].childNodes, { nodeType: 3 });
     textNode.forEach(function(value, index, array) {
       if (index === 0) {
-        result.nodeSituationPartielle = value.data;
+        result.situationPartielle = value.data;
       } else {
-        result.nodeSituationPartielle += ' ' + value.data;
+        result.situationPartielle += ' ' + value.data;
       }
     });
   }
