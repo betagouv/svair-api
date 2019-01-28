@@ -128,6 +128,31 @@ module.exports.result = function parseResult(html, year, callback) {
     result.anneeImpots = regexp.exec(titleAnnee)[0];
     result.anneeRevenus = regexp.exec(titleAnnee)[0];
   }
+
+  var nodeErreurCorrectif = select('//*[@id="erreurCorrectif"]', doc);
+  if (nodeErreurCorrectif.length > 0) {
+    var textNode = _.filter(nodeErreurCorrectif[0].childNodes, { nodeType: 3 });
+    textNode.forEach(function(value, index, array) {
+      if (index === 0) {
+        result.erreurCorrectif = value.data;
+      } else {
+        result.erreurCorrectif += ' ' + value.data;
+      }
+    });
+  }
+
+  var nodeSituationPartielle = select('//*[@id="situationPartielle"]', doc);
+  if (nodeSituationPartielle.length > 0) {
+    var textNode = _.filter(nodeSituationPartielle[0].childNodes, { nodeType: 3 });
+    textNode.forEach(function(value, index, array) {
+      if (index === 0) {
+        result.situationPartielle = value.data;
+      } else {
+        result.situationPartielle += ' ' + value.data;
+      }
+    });
+  }
+
   if(!result.declarant1.nom) {
     return callback(new Error("Parsing error"))
   }
