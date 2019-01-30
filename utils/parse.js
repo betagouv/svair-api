@@ -41,7 +41,7 @@ module.exports.result = function parseResult(html, year, callback) {
     return _.assign(obj, { dest: key });
   });
 
-  var declarantMappingBySrc = _.indexBy(compactedDeclarantMapping, 'src');
+  var declarantMappingBySrc = _.keyBy(compactedDeclarantMapping, 'src');
 
   function getImpot(value) {
     if(value.trim() === "Non imposable") {
@@ -68,7 +68,7 @@ module.exports.result = function parseResult(html, year, callback) {
     return _.assign(obj, { dest: key });
   });
 
-  var mappingBySrc = _.indexBy(compactedMapping, 'src');
+  var mappingBySrc = _.keyBy(compactedMapping, 'src');
 
   if (select('//*[@id="nonTrouve"]', doc).length) {
     return callback(new Error('Invalid credentials'));
