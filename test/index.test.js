@@ -17,7 +17,7 @@ describe('Index test', function () {
     var svair = new Svair('https://cfsmsp.impots.gouv.fr')
     describe("calling the API", function() {
       describe('with good identification', function() {
-        it('return the declaration', function (done) {
+        it('returns the declaration', function (done) {
 
           impotEndPoint
             .get('/secavis/')
@@ -36,7 +36,7 @@ describe('Index test', function () {
           })
         });
 
-        it('return the declaration with empty cells', function (done) {
+        it('returns the declaration with empty cells', function (done) {
 
           impotEndPoint
             .get('/secavis/')
@@ -51,13 +51,14 @@ describe('Index test', function () {
             .reply(200, postHttpResponseEmptyCell);
 
           svair("toto", "tutu", function(err, body) {
+            expect(body.revenuBrutGlobal).to.be.null;
             done(err)
           })
         });
       })
 
       describe('with bad identification', function() {
-        it('return an error', function (done) {
+        it('returns an error', function (done) {
 
           impotEndPoint
             .get('/secavis/')
@@ -79,7 +80,7 @@ describe('Index test', function () {
       })
 
       describe('when the post return none sens', function() {
-        it('return an error', function (done) {
+        it('returns an error', function (done) {
 
           impotEndPoint
             .get('/secavis/')
