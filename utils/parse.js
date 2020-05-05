@@ -102,6 +102,8 @@ module.exports.result = function parseResult(html, year, callback) {
         } else {
           result[mappingEntry.dest] = cells[1].firstChild.data
         }
+      } else {
+        result[mappingEntry.dest] = null;
       }
     }
   })

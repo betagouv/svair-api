@@ -9,6 +9,7 @@ describe('Parse ', function () {
   var postHttpResponse = fs.readFileSync(__dirname + '/resources/postHttpResponse.txt','utf-8');
   var getHttpResponse = fs.readFileSync(__dirname + '/resources/getHttpResponse.txt','utf-8');
   var postHttpResponse2 = fs.readFileSync(__dirname + '/resources/postHttpResponse2.txt','utf-8');
+  var postHttpEmptyCell = fs.readFileSync(__dirname + '/resources/postHttpResponseEmptyCell.txt','utf-8');
 
   describe("parse Euro", function () {
     it("remove space", function () {
@@ -240,5 +241,15 @@ describe('Parse ', function () {
       })
     });
 
+    describe("with empty cells", function() {
+      it("returns null values", function (done) {
+        parseResult(postHttpEmptyCell, 2015, function(err, result) {
+          if(err) return done(err);
+          expect(result).to.contain.keys('revenuBrutGlobal');
+          expect(result.revenuBrutGlobal).to.be.null;
+          done();
+        })
+      })
+    });
   });
 });
