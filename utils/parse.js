@@ -7,11 +7,7 @@ var fs = require('fs')
 
 function parseEuro(str) {
   var data = str
-  .replace(/\u00A0/g, '')
-  .replace(/€/g, '')
-  .replace(/ /g, '')
-  .replace(/\n/g, '')
-  .replace(/\t/g, '')
+  .replace(/[^0-9]/g, '')
   return isNumeric(data) ? _.parseInt(data): 0;
 }
 
