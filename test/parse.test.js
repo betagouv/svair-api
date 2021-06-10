@@ -239,6 +239,14 @@ describe('Parse ', function () {
           done();
         })
       })
+
+      it("extract the revenuFiscalReference ", function (done) {
+        parseResult(postHttpResponse2, 2014, function(err, result) {
+          if(err) return done(err);
+          expect(result.revenuFiscalReference).to.equal(32011)
+          done();
+        })
+      })
     });
 
     describe("with empty cells", function() {
