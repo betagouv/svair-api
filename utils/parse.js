@@ -6,6 +6,9 @@ var dom = require('xmldom').DOMParser
 var fs = require('fs')
 
 function parseEuro(str) {
+  if (str.indexOf('&nbsp;') !== -1) {
+    console.error('WARNING: HTML-encoded space found!')
+  }
   var data = str
   .replace(/[^0-9]/g, '')
   return isNumeric(data) ? _.parseInt(data): 0;
@@ -19,7 +22,12 @@ module.exports.euro = parseEuro
 
 
 module.exports.result = function parseResult(html, year, callback) {
-  var doc = new dom().parseFromString(html.replace(/(\n|\t)/g, ''))
+  var doc = new dom({
+    errorHandler: {
+      warning: () => {},
+      error: () => {},
+    },
+  }).parseFromString(html.replace(/(\n|\t)/g, ''))
   var result = {
     declarant1: { },
     declarant2: { }
